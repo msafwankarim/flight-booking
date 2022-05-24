@@ -7,3 +7,7 @@ img {
   object-fit: cover;
   height: 100%;
 }
+.navlink {
+  text-decoration: none;
+  color: inherit;
+}

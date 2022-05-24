@@ -1,9 +1,10 @@
+import { Container } from "@mui/material";
 import MainSection from "../components/MainSection";
 
-const HomePage = () => {
-  <div className="homepage">
-    <MainSection />
-  </div>;
-};
-
-export { HomePage };
+export default function HomePage() {
+  return (
+    <Container className="homepage">
+      <MainSection />
+    </Container>
+  );
+}

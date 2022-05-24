@@ -11,7 +11,7 @@ const MainSection = () => {
           <SearchFlightForm />
         </Grid>
         <Grid xs={6} item>
-          <img src={PIA_IMG} className="pia-image" />
+          <img src={PIA_IMG} className="pia-image" alt={PIA_IMG} />
         </Grid>
       </Grid>
     </Paper>

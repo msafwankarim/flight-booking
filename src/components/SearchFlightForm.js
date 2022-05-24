@@ -34,7 +34,7 @@ const SearchFlightForm = () => {
       returnDate,
       dateFlexible,
     };
-    if (data.tripType == "one-way") {
+    if (data.tripType === "one-way") {
       data.returnDate = undefined;
     }
     console.log(data);

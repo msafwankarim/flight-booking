@@ -1,5 +1,4 @@
 import { TextField, InputAdornment, IconButton } from "@mui/material";
-import { useState } from "react";
 
 const SeatsInput = ({ seats, setSeats }) => {
   const incrementSeats = () => {

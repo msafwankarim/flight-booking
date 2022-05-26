@@ -1,40 +1,8 @@
 import { Typography, Paper, Box, Container } from "@mui/material";
 import FlightList from "./FlightList";
+import { DUMMY_RESULTS } from "../utils/dummy-data";
 
 const SearchResults = () => {
-  const DUMMY_RESULTS = [
-    {
-      airline_name: "Qatar Airways",
-      departureDate: new Date(),
-      arrivalDate: new Date(),
-      departureLocation: "Islamabad",
-      arrivalLocation: "Sharjah",
-      isRefundable: true,
-      price: 253167,
-      numberOfPassengers: 1,
-    },
-    {
-      airline_name: "PIA",
-      departureDate: new Date(),
-      arrivalDate: new Date(),
-      departureLocation: "Karachi",
-      arrivalLocation: "Islamabad",
-      isRefundable: true,
-      price: 253167,
-      numberOfPassengers: 1,
-    },
-    {
-      airline_name: "PIA",
-      departureDate: new Date(),
-      arrivalDate: new Date(),
-      departureLocation: "Karachi",
-      arrivalLocation: "Lahore",
-      isRefundable: true,
-      price: 253167,
-      numberOfPassengers: 1,
-    },
-  ];
-
   return (
     <Container
       maxWidth="lg"

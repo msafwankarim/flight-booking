@@ -1,5 +1,5 @@
 import { AppBar, Button, Toolbar, Box } from "@mui/material";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import LOGO from "../assets/logo.png";
 
 const Header = () => {
@@ -37,10 +37,14 @@ const Header = () => {
             </NavLink>
           </Button>
         </Box>
-
-        <Button color="inherit" variant="outlined">
-          Track my Ticket
-        </Button>
+        <Link
+          to="/track-ticket"
+          style={{ color: "inherit", textDecoration: "none" }}
+        >
+          <Button color="inherit" variant="outlined">
+            Track my Ticket
+          </Button>
+        </Link>
       </Toolbar>
     </AppBar>
   );

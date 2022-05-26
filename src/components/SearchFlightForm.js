@@ -10,7 +10,6 @@ import {
 import { useState } from "react";
 import {
   createSearchParams,
-  useLocation,
   useNavigate,
   useSearchParams,
 } from "react-router-dom";
@@ -22,11 +21,10 @@ import TripTypeInput from "./TripTypeInput";
 const SearchFlightForm = ({ isSearchPage }) => {
   // React Router
   const navigate = useNavigate(),
-    location = useLocation(),
     [searchParams, setSearchParams] = useSearchParams();
 
   const [tripType, setTripType] = useState(
-    searchParams.get("tripType") || "round-trip"
+    searchParams.get("tripType") || "one-way"
   );
 
   const [seats, setSeats] = useState(searchParams.get("seats") || 1);
@@ -44,7 +42,7 @@ const SearchFlightForm = ({ isSearchPage }) => {
     searchParams.get("returnDate") || ""
   );
   const [dateFlexible, setDateFlexible] = useState(
-    searchParams.get("returnDate") === "true" || false
+    searchParams.get("dateFlexible") === "true" || false
   );
 
   let normalGridSpan = 6,

@@ -11,3 +11,6 @@ img {
   text-decoration: none;
   color: inherit;
 }
+svg {
+  vertical-align: middle;
+}

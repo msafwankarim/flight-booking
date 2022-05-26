@@ -1,9 +1,10 @@
-import { TextField, InputAdornment, IconButton } from "@mui/material";
+import { AddOutlined, RemoveOutlined } from "@mui/icons-material";
+import { TextField, IconButton } from "@mui/material";
 
 const SeatsInput = ({ seats, setSeats }) => {
   const incrementSeats = () => {
     setSeats((prevSeats) => {
-      return prevSeats + 1;
+      return prevSeats * 1 + 1;
     });
   };
 
@@ -24,14 +25,14 @@ const SeatsInput = ({ seats, setSeats }) => {
       type="number"
       InputProps={{
         startAdornment: (
-          <InputAdornment position="start">
-            <IconButton onClick={decrementSeats}>-</IconButton>,
-          </InputAdornment>
+          <IconButton onClick={decrementSeats} sx={{ fontSize: "16px" }}>
+            <RemoveOutlined fontSize="inherit" />
+          </IconButton>
         ),
         endAdornment: (
-          <InputAdornment position="end">
-            <IconButton onClick={incrementSeats}>+</IconButton>
-          </InputAdornment>
+          <IconButton onClick={incrementSeats} sx={{ fontSize: "16px" }}>
+            <AddOutlined fontSize="inherit" />
+          </IconButton>
         ),
       }}
     />

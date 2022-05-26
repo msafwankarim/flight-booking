@@ -8,20 +8,9 @@ import {
   Divider,
   Button,
 } from "@mui/material";
+import FlightTime from "./FlightTime";
 
-const getTime = (date) => {
-  let hours = date.getHours();
-  let minutes = date.getMinutes();
-  let ampm = hours >= 12 ? "pm" : "am";
-  hours = hours % 12;
-  hours = hours ? hours : 12; // the hour '0' should be '12'
-  minutes = minutes < 10 ? "0" + minutes : minutes;
-  let strTime = hours + ":" + minutes + " " + ampm;
-
-  return strTime;
-};
-
-const FlightListItem = ({ data }) => {
+const FlightListItem = ({ data, onBooking, elevated }) => {
   const refundableText = (
     <Typography
       variant="caption"
@@ -33,20 +22,24 @@ const FlightListItem = ({ data }) => {
         borderRadius: "3px",
       }}
     >
-      {data.isRefundable ? "Refundable" : ""}
+      {data.isRefundable ? "Refundable" : "Non Refundable"}
     </Typography>
   );
 
-  let departureTime = getTime(data.departureDate),
-    arrivalTime = getTime(data.arrivalDate);
-
+  const handleBookme = (event) => {
+    onBooking(data);
+  };
   return (
     <ListItem sx={{ padding: 0, margin: 0 }}>
       <ListItemButton sx={{ paddingX: 0 }}>
         <Paper
-          variant="elevation"
-          elevation={4}
-          sx={{ flexGrow: 1, display: "flex" }}
+          variant={elevated ? "elevation" : "outlined"}
+          elevation={elevated ? 4 : 0}
+          sx={{
+            flexGrow: 1,
+            display: "flex",
+            flexDirection: { md: "row", xs: "column" },
+          }}
         >
           <Box flexGrow="1">
             <Box
@@ -72,35 +65,48 @@ const FlightListItem = ({ data }) => {
                 alignItems: "center",
               }}
             >
-              <Avatar>{data.airline_name[0]}</Avatar>
+              <Avatar sx={{ width: 56, height: 56 }}>
+                {data.airline_name[0]}
+              </Avatar>
               <Box
                 sx={{
                   display: "flex",
-                  marginLeft: 1,
+                  marginX: 3,
                   flexGrow: 1,
                 }}
               >
                 <Box display="flex" flexGrow="1" alignItems="center">
-                  <Typography variant="h6">{departureTime}</Typography>
+                  <FlightTime flightTime={data.departure} />
                   <Box
                     flexGrow="1"
                     height="2px"
                     sx={{ backgroundColor: "lightgray", marginX: 2 }}
-                  >
-                    {" "}
-                  </Box>
-                  <Typography variant="h6">{arrivalTime}</Typography>
+                  ></Box>
+                  <FlightTime flightTime={data.arrival} />
                 </Box>
               </Box>
             </Box>
           </Box>
-          <Box padding={2} borderLeft="1px solid lightgray">
+          <Box
+            padding={2}
+            borderLeft="1px solid lightgray"
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+          >
             <Typography fontWeight="bold" marginY={1}>
               Rs. {data.price.toLocaleString()}
             </Typography>
-            <Button fullWidth variant="contained" sx={{ marginY: 1 }}>
-              Book me
-            </Button>
+            {onBooking && (
+              <Button
+                fullWidth
+                variant="contained"
+                sx={{ marginY: 1 }}
+                onClick={handleBookme}
+              >
+                Book me
+              </Button>
+            )}
             <Typography marginY={1}>
               {data.numberOfPassengers} Passenger(s)
             </Typography>

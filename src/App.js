@@ -5,6 +5,7 @@ import Header from "./components/Header";
 import BookingConfirmation from "./pages/BookingConfirmation";
 import SearchResultsPage from "./pages/SearchResultsPage";
 import HomePage from "./pages/HomePage";
+import TrackTicket from "./pages/TrackTicket";
 
 function App() {
   return (
@@ -14,10 +15,8 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/search" element={<SearchResultsPage />} />
-          <Route
-            path="/booking-confirmation"
-            element={<BookingConfirmation />}
-          />
+          <Route path="/booking/:id" element={<BookingConfirmation />} />
+          <Route path="/track-ticket" element={<TrackTicket />} />
         </Routes>
       </Box>
     </div>

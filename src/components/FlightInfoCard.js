@@ -18,7 +18,7 @@ import { getTimeDifference } from "../utils/date-helpers";
 import FlightListItem from "./FlightListItem";
 import FlightTime from "./FlightTime";
 
-const FlightInfoCard = ({ flight, onConfirmBooking }) => {
+const FlightInfoCard = ({ flight, onConfirmBooking, buttonText }) => {
   return (
     <Box>
       <FlightListItem data={flight} />
@@ -83,7 +83,7 @@ const FlightInfoCard = ({ flight, onConfirmBooking }) => {
         sx={{ mt: 1 }}
         onClick={onConfirmBooking}
       >
-        Confirm Booking
+        {buttonText || "Confirm Booking"}
       </Button>
     </Box>
   );

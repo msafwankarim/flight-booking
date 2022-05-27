@@ -8,9 +8,12 @@ import {
   Divider,
   Button,
 } from "@mui/material";
+import { useSearchParams } from "react-router-dom";
 import FlightTime from "./FlightTime";
 
 const FlightListItem = ({ data, onBooking, elevated }) => {
+  const [queryParams] = useSearchParams();
+  const seats = queryParams.get("seats") * 1 || 1;
   const refundableText = (
     <Typography
       variant="caption"
@@ -95,7 +98,7 @@ const FlightListItem = ({ data, onBooking, elevated }) => {
             justifyContent="center"
           >
             <Typography fontWeight="bold" marginY={1}>
-              Rs. {data.price.toLocaleString()}
+              Rs. {(data.price * seats).toLocaleString()}
             </Typography>
             {onBooking && (
               <Button
@@ -107,9 +110,7 @@ const FlightListItem = ({ data, onBooking, elevated }) => {
                 Book me
               </Button>
             )}
-            <Typography marginY={1}>
-              {data.numberOfPassengers} Passenger(s)
-            </Typography>
+            <Typography marginY={1}>{seats} Passenger(s)</Typography>
           </Box>
         </Paper>
       </ListItemButton>

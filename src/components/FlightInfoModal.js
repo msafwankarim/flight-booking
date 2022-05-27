@@ -26,7 +26,7 @@ const FlightInfoModal = ({ flight, open, handleClose }) => {
   const confirmBooking = (event) => {
     let seats = searchParams.get("seats");
     navigate({
-      pathname: `/booking/${flight.id}`,
+      pathname: `/booking/${flight._id}`,
       search: `?seats=${seats || 1}`,
     });
   };

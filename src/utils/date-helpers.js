@@ -1,4 +1,5 @@
-const getTime = (date) => {
+const getTime = (param) => {
+  let date = new Date(param);
   let hours = date.getHours();
   let minutes = date.getMinutes();
   let ampm = hours >= 12 ? "pm" : "am";
@@ -10,7 +11,7 @@ const getTime = (date) => {
   return strTime;
 };
 
-const getMonthAndDay = (date) => {
+const getMonthAndDay = (param) => {
   const months = [
     "Jan",
     "Feb",
@@ -25,6 +26,7 @@ const getMonthAndDay = (date) => {
     "Nov",
     "Dec",
   ];
+  const date = new Date(param);
   const month = months[date.getMonth()];
   return `${date.getDate()}-${month}`;
 };
@@ -49,7 +51,7 @@ function convertMsToHM(milliseconds) {
 }
 
 const getTimeDifference = (date1, date2) => {
-  let timeDifference = date1 - date2;
+  let timeDifference = new Date(date1) - new Date(date2);
 
   return convertMsToHM(timeDifference);
 };

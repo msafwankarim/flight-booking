@@ -28,7 +28,7 @@ const SearchFlightForm = ({ isSearchPage }) => {
   );
 
   const [seats, setSeats] = useState(searchParams.get("seats") || 1);
-  const [flight, setFlight] = useState(searchParams.get("flight") || "");
+  const [flight, setFlight] = useState(searchParams.get("flight") || "economy");
   const [departureLocation, setDepartureLocation] = useState(
     searchParams.get("departureLocation") || ""
   );

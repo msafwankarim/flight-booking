@@ -8,12 +8,12 @@ import {
   Divider,
   Button,
 } from "@mui/material";
-import { useSearchParams } from "react-router-dom";
+import { useContext } from "react";
+import FlightContext from "../store/flight-context";
 import FlightTime from "./FlightTime";
 
 const FlightListItem = ({ data, onBooking, elevated }) => {
-  const [queryParams] = useSearchParams();
-  const seats = queryParams.get("seats") * 1 || 1;
+  const { seats } = useContext(FlightContext);
   const refundableText = (
     <Typography
       variant="caption"

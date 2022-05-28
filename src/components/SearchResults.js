@@ -12,11 +12,19 @@ import { useSearchParams, createSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 const SearchResults = () => {
-  const [queryParams, setQueryParams] = useSearchParams();
+  const [queryParams] = useSearchParams();
   const [results, setResults] = useState(null);
   const [error, setError] = useState(false);
+  const [emptyForm, setEmptyForm] = useState(
+    Object.keys(Object.fromEntries(queryParams)).length === 0
+  );
 
   useEffect(() => {
+    if (emptyForm)
+      return setEmptyForm(
+        Object.keys(Object.fromEntries(queryParams)).length === 0
+      );
+
     fetch(
       `http://localhost:8000/api/flights?${createSearchParams(queryParams)}`
     )
@@ -30,12 +38,15 @@ const SearchResults = () => {
       .then((data) => {
         console.log(data.flights);
         setResults(data.flights);
+        setError(false);
       });
-  }, [queryParams]);
+  }, [queryParams, emptyForm]);
 
   let output = <></>;
 
-  if (!results && !error) {
+  if (emptyForm) {
+    output = <Typography>Fill the form to search flights</Typography>;
+  } else if (!results && !error) {
     output = <CircularProgress />;
   } else if (error) {
     output = (
@@ -44,7 +55,7 @@ const SearchResults = () => {
         An internal error occurred
       </Alert>
     );
-  } else if (results && results.length == 0) {
+  } else if (results && results.length === 0) {
     output = (
       <Alert severity="error">
         <AlertTitle>Error</AlertTitle>

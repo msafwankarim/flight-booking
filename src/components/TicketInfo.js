@@ -3,7 +3,14 @@ import { Box } from "@mui/system";
 import FlightInfoCard from "./FlightInfoCard";
 import PricingInfoCard from "./PricingInfoCard";
 
-const TicketInfo = ({ flightInfo, personalInfo, ticketNumber, ...others }) => {
+const TicketInfo = ({
+  flightInfo,
+  personalInfo,
+  ticketNumber,
+  onTicketAction,
+  ticketActionText,
+  ...others
+}) => {
   return (
     <Box {...others}>
       <Typography variant="h6">
@@ -11,7 +18,11 @@ const TicketInfo = ({ flightInfo, personalInfo, ticketNumber, ...others }) => {
       </Typography>
       <Grid container spacing={1}>
         <Grid item md={8}>
-          <FlightInfoCard flight={flightInfo} />
+          <FlightInfoCard
+            flight={flightInfo}
+            onConfirmBooking={onTicketAction}
+            buttonText={ticketActionText}
+          />
         </Grid>
         <Grid item md={4} mt={1}>
           <PricingInfoCard flight={flightInfo} passenger={personalInfo} />

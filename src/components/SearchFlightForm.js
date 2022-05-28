@@ -7,12 +7,13 @@ import {
   Button,
   Checkbox,
 } from "@mui/material";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   createSearchParams,
   useNavigate,
   useSearchParams,
 } from "react-router-dom";
+import FlightContext from "../store/flight-context";
 import FlightTypeInput from "./FlightTypeInput";
 import LoactionInput from "./LocationInput";
 import SeatsInput from "./SeatsInput";
@@ -44,6 +45,7 @@ const SearchFlightForm = ({ isSearchPage }) => {
   const [dateFlexible, setDateFlexible] = useState(
     searchParams.get("dateFlexible") === "true" || false
   );
+  const flightContext = useContext(FlightContext);
 
   let normalGridSpan = 6,
     seatsGridSpan = 3,
@@ -84,6 +86,7 @@ const SearchFlightForm = ({ isSearchPage }) => {
     }
     console.log(data);
 
+    flightContext.setSeats(seats);
     setSearchParams(data);
 
     if (!isSearchPage) {

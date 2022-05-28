@@ -7,11 +7,11 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { useSearchParams } from "react-router-dom";
+import { useContext } from "react";
+import FlightContext from "../store/flight-context";
 
 const PricingInfoCard = ({ flight, passenger }) => {
-  const [searchParams] = useSearchParams();
-  const seats = searchParams.get("seats") * 1 || 1;
+  const { seats } = useContext(FlightContext);
 
   return (
     <Card variant="outlined">
@@ -23,7 +23,7 @@ const PricingInfoCard = ({ flight, passenger }) => {
                 <Typography fontWeight="bold">First Name</Typography>
               </TableCell>
               <TableCell align="right">
-                <Typography>{passenger.firstName}</Typography>
+                <Typography>{passenger.first_name}</Typography>
               </TableCell>
             </TableRow>
             <TableRow>
@@ -31,7 +31,7 @@ const PricingInfoCard = ({ flight, passenger }) => {
                 <Typography fontWeight="bold">Last Name</Typography>
               </TableCell>
               <TableCell align="right">
-                <Typography>{passenger.lastName}</Typography>
+                <Typography>{passenger.last_name}</Typography>
               </TableCell>
             </TableRow>
             <TableRow>

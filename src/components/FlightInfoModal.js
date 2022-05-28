@@ -1,6 +1,8 @@
-import { ClosedCaptionOutlined, CloseOutlined } from "@mui/icons-material";
+import { CloseOutlined } from "@mui/icons-material";
 import { Modal, Container, IconButton } from "@mui/material";
+import { useContext } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import FlightContext from "../store/flight-context";
 import FlightInfoCard from "./FlightInfoCard";
 
 const style = {
@@ -22,9 +24,12 @@ const style = {
 const FlightInfoModal = ({ flight, open, handleClose }) => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-
+  const { setInboundFlight } = useContext(FlightContext);
   const confirmBooking = (event) => {
     let seats = searchParams.get("seats");
+
+    setInboundFlight(flight);
+
     navigate({
       pathname: `/booking/${flight._id}`,
       search: `?seats=${seats || 1}`,

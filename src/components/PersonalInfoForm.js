@@ -13,20 +13,20 @@ import {
 import { useState } from "react";
 const PersonalInfoForm = ({ onNext, initialInfo }) => {
   const info = initialInfo || {};
-  const [firstName, setFirstName] = useState(info.firstName || ""),
-    [lastName, setLastName] = useState(info.lastName || ""),
+  const [first_name, setFirstName] = useState(info.first_name || ""),
+    [last_name, setLastName] = useState(info.last_name || ""),
     [gender, setGender] = useState(info.gender || "male"),
     [dob, setDoB] = useState(info.dob || ""),
     [cnic, setCnic] = useState(info.cnic || ""),
     [email, setEmail] = useState(info.email || ""),
-    [phone, setPhone] = useState(info.phone || 0);
+    [phone, setPhone] = useState(info.phone || "");
 
   const onSubmit = (event) => {
     event.preventDefault();
     console.log(event);
     const personalInfo = {
-      firstName,
-      lastName,
+      first_name: first_name,
+      last_name: last_name,
       gender,
       dob,
       cnic,
@@ -44,7 +44,7 @@ const PersonalInfoForm = ({ onNext, initialInfo }) => {
           <Grid container spacing={2}>
             <Grid item xs={12} md={6}>
               <TextField
-                value={firstName}
+                value={first_name}
                 onChange={(e) => setFirstName(e.target.value)}
                 fullWidth
                 required
@@ -53,7 +53,7 @@ const PersonalInfoForm = ({ onNext, initialInfo }) => {
             </Grid>
             <Grid item xs={12} md={6}>
               <TextField
-                value={lastName}
+                value={last_name}
                 onChange={(e) => setLastName(e.target.value)}
                 fullWidth
                 required

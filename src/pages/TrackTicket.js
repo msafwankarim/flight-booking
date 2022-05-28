@@ -3,7 +3,7 @@ import TicketSearch from "../components/TicketSearch";
 
 const TrackTicket = () => {
   return (
-    <Container>
+    <Container maxWidth="xl">
       <TicketSearch />
     </Container>
   );

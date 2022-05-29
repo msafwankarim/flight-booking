@@ -11,6 +11,7 @@ const TripTypeInput = ({ tripType, setTripType }) => {
     <FormControl sx={{ display: "block", marginBottom: "1em" }}>
       <FormLabel>Trip type</FormLabel>
       <RadioGroup
+        name="trip-type"
         onChange={(event) => setTripType(event.target.value)}
         value={tripType}
         row

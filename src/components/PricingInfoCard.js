@@ -10,8 +10,19 @@ import {
 import { useContext } from "react";
 import FlightContext from "../store/flight-context";
 
-const PricingInfoCard = ({ flight, passenger }) => {
-  const { seats } = useContext(FlightContext);
+const PricingInfoCard = ({ flights, passenger, seats }) => {
+  const fContext = useContext(FlightContext);
+  seats = seats || fContext.seats;
+
+  const { inboundFlight, outboundFlight } = flights;
+
+  let baseprice = outboundFlight.price,
+    totalPrice = baseprice * seats;
+
+  if (inboundFlight) {
+    baseprice += inboundFlight.price;
+    totalPrice = baseprice * seats;
+  }
 
   return (
     <Card variant="outlined">
@@ -55,7 +66,7 @@ const PricingInfoCard = ({ flight, passenger }) => {
                 <Typography fontWeight="bold">Base Price</Typography>
               </TableCell>
               <TableCell align="right">
-                <Typography>Rs. {flight.price.toLocaleString()}</Typography>
+                <Typography>Rs. {baseprice.toLocaleString()}</Typography>
               </TableCell>
             </TableRow>
             <TableRow>
@@ -71,9 +82,7 @@ const PricingInfoCard = ({ flight, passenger }) => {
                 <Typography fontWeight="bold">Total Price</Typography>
               </TableCell>
               <TableCell align="right">
-                <Typography>
-                  Rs. {(flight.price * seats).toLocaleString()}
-                </Typography>
+                <Typography>Rs. {totalPrice.toLocaleString()}</Typography>
               </TableCell>
             </TableRow>
           </TableBody>

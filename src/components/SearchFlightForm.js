@@ -15,12 +15,13 @@ import {
 } from "react-router-dom";
 import FlightContext from "../store/flight-context";
 import FlightTypeInput from "./FlightTypeInput";
-import LoactionInput from "./LocationInput";
+import LocationInput from "./LocationInput";
 import SeatsInput from "./SeatsInput";
 import TripTypeInput from "./TripTypeInput";
 
 const SearchFlightForm = ({ isSearchPage }) => {
   // React Router
+
   const navigate = useNavigate(),
     [searchParams, setSearchParams] = useSearchParams();
 
@@ -89,12 +90,10 @@ const SearchFlightForm = ({ isSearchPage }) => {
     flightContext.setSeats(seats);
     setSearchParams(data);
 
-    if (!isSearchPage) {
-      navigate({
-        pathname: "/search",
-        search: `?${createSearchParams(data)}`,
-      });
-    }
+    navigate({
+      pathname: "/search",
+      search: `?${createSearchParams(data)}`,
+    });
   };
 
   return (
@@ -111,14 +110,14 @@ const SearchFlightForm = ({ isSearchPage }) => {
       )}
       <Grid container rowSpacing={3} spacing={1}>
         <Grid item xs={12} md={normalGridSpan}>
-          <LoactionInput
+          <LocationInput
             label="Departure Location"
             location={departureLocation}
             setLocation={setDepartureLocation}
           />
         </Grid>
         <Grid item xs={12} md={normalGridSpan}>
-          <LoactionInput
+          <LocationInput
             label="Destination"
             location={destination}
             setLocation={setDestination}
@@ -126,6 +125,7 @@ const SearchFlightForm = ({ isSearchPage }) => {
         </Grid>
         <Grid item xs={12} md={normalGridSpan}>
           <TextField
+            name="departure-date"
             variant="outlined"
             label="Departure Date"
             value={departureDate}
@@ -142,6 +142,7 @@ const SearchFlightForm = ({ isSearchPage }) => {
           <TextField
             variant="outlined"
             label="Return Date"
+            name="return-date"
             value={returnDate}
             onChange={(e) => setReturnDate(e.target.value)}
             InputLabelProps={{
@@ -150,6 +151,7 @@ const SearchFlightForm = ({ isSearchPage }) => {
             fullWidth
             type="date"
             disabled={tripType === "one-way"}
+            required={tripType === "round-trip"}
           />
         </Grid>
         <Grid item xs={12} md={seatsGridSpan} sx={{ display: "flex" }}>

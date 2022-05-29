@@ -1,17 +1,18 @@
 import { TextField } from "@mui/material";
 
-const LoactionInput = ({ label, location, setLocation }) => {
+const LocationInput = ({ label, location, setLocation }) => {
   return (
     <TextField
       variant="outlined"
       value={location}
       onChange={(e) => setLocation(e.target.value)}
       label={label}
-      placeholder="City or Airport"
+      placeholder="City"
+      name="Location"
       fullWidth
       required
     />
   );
 };
 
-export default LoactionInput;
+export default LocationInput;

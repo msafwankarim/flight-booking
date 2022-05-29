@@ -2,15 +2,18 @@ import { Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import FlightInfoCard from "./FlightInfoCard";
 import PricingInfoCard from "./PricingInfoCard";
+import RoundTripInfoCard from "./RoundTripInfoCard";
 
 const TicketInfo = ({
-  flightInfo,
+  flights,
   personalInfo,
   ticketNumber,
   onTicketAction,
   ticketActionText,
+  seats,
   ...others
 }) => {
+  console.log(flights.inboundFlight);
   return (
     <Box {...others}>
       <Typography variant="h6">
@@ -18,14 +21,28 @@ const TicketInfo = ({
       </Typography>
       <Grid container spacing={1}>
         <Grid item md={8}>
-          <FlightInfoCard
-            flight={flightInfo}
-            onConfirmBooking={onTicketAction}
-            buttonText={ticketActionText}
-          />
+          {flights.inboundFlight ? (
+            <RoundTripInfoCard
+              trip={flights}
+              buttonText={ticketActionText}
+              onConfirmBooking={onTicketAction}
+              seats={seats}
+            />
+          ) : (
+            <FlightInfoCard
+              flight={flights.outboundFlight}
+              onConfirmBooking={onTicketAction}
+              buttonText={ticketActionText}
+              seats={seats}
+            />
+          )}
         </Grid>
         <Grid item md={4} mt={1}>
-          <PricingInfoCard flight={flightInfo} passenger={personalInfo} />
+          <PricingInfoCard
+            flights={flights}
+            passenger={personalInfo}
+            seats={seats}
+          />
         </Grid>
       </Grid>
     </Box>

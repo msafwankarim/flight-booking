@@ -28,7 +28,13 @@ const style = {
   p: 4,
 };
 
-const PaymentModal = ({ onPayment, handleClose, amount }) => {
+const PaymentModal = ({
+  onPayment,
+  handleClose,
+  visible,
+  amount,
+  buttonText,
+}) => {
   const [creditCardNumber, setCreditCardNumber] = useState(""),
     [cvc, setCvc] = useState(""),
     [expiry, setExpiry] = useState(""),
@@ -39,12 +45,13 @@ const PaymentModal = ({ onPayment, handleClose, amount }) => {
     onPayment({
       cc_name: owner,
       cc_number: creditCardNumber,
-      cvv: cvc,
+      cvc: cvc,
       expiry: expiry,
     });
   };
+
   return (
-    <Modal open={true} onClose={handleClose}>
+    <Modal open={visible} onClose={handleClose}>
       <Container sx={style} maxWidth="sm">
         <IconButton
           sx={{ position: "absolute", right: 0, top: 0 }}
@@ -72,6 +79,8 @@ const PaymentModal = ({ onPayment, handleClose, amount }) => {
                   ),
                 }}
                 required
+                placeholder="Credit Card Name"
+                name="owner"
                 value={owner}
                 onChange={(e) => setOwner(e.target.value)}
                 fullWidth
@@ -87,7 +96,12 @@ const PaymentModal = ({ onPayment, handleClose, amount }) => {
                     </Icon>
                   ),
                 }}
-                type="number"
+                inputProps={{
+                  inputMode: "numeric",
+                  pattern: "[0-9]*",
+                }}
+                name="creditCardNumber"
+                placeholder="Card Number"
                 required
                 value={creditCardNumber}
                 onChange={(e) => setCreditCardNumber(e.target.value)}
@@ -103,18 +117,20 @@ const PaymentModal = ({ onPayment, handleClose, amount }) => {
                       <Key color="action" />
                     </Icon>
                   ),
+                  type: "numeric",
                 }}
-                type="number"
+                name="cvc"
                 required
                 value={cvc}
                 onChange={(e) => setCvc(e.target.value)}
                 fullWidth
                 label="CVC"
-                placeholder=""
+                placeholder="CVC"
               ></TextField>
             </Grid>
             <Grid item xs={12}>
               <TextField
+                name="expiry"
                 fullWidth
                 label="Expiry"
                 InputLabelProps={{
@@ -129,7 +145,7 @@ const PaymentModal = ({ onPayment, handleClose, amount }) => {
             </Grid>
             <Grid item md={6} xs={12} m="auto">
               <Button type="submit" variant="contained" fullWidth>
-                Pay PKR {amount}
+                {buttonText}
               </Button>
             </Grid>
           </Grid>

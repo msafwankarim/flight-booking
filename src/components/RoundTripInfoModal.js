@@ -1,9 +1,9 @@
-import { CloseOutlined } from "@mui/icons-material";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Modal, Container, IconButton } from "@mui/material";
 import { useContext } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { CloseOutlined } from "@mui/icons-material";
 import FlightContext from "../store/flight-context";
-import FlightInfoCard from "./FlightInfoCard";
+import RoundTripInfoCard from "./RoundTripInfoCard";
 
 const style = {
     position: "absolute",
@@ -21,35 +21,33 @@ const style = {
     right: "0",
   };
 
-const FlightInfoModal = ({ flight, open, handleClose }) => {
+const RoundTripInfoModal = ({ handleClose, trip }) => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { setOutboundFlight, setInboundFlight, setSeats } =
-    useContext(FlightContext);
+  const { setInboundFlight, setOutboundFlight } = useContext(FlightContext);
+
   const confirmBooking = (event) => {
-    let seats = searchParams.get("seats") || 1;
+    let seats = searchParams.get("seats");
 
-    setOutboundFlight(flight);
-    setInboundFlight(null);
-
-    setSeats(seats);
+    setInboundFlight(trip.inboundFlight);
+    setOutboundFlight(trip.outboundFlight);
 
     navigate({
-      pathname: `/booking/${flight._id}`,
+      pathname: `/booking/${trip.inboundFlight._id}`,
       search: `?seats=${seats || 1}`,
     });
   };
 
   return (
-    <Modal open={open} onClose={handleClose}>
+    <Modal open={true} onClose={handleClose}>
       <Container sx={style} maxWidth="lg">
         <IconButton sx={closeButtonStyle} onClick={handleClose}>
           <CloseOutlined />
         </IconButton>
-        <FlightInfoCard flight={flight} onConfirmBooking={confirmBooking} />
+        <RoundTripInfoCard trip={trip} onConfirmBooking={confirmBooking} />
       </Container>
     </Modal>
   );
 };
 
-export default FlightInfoModal;
+export default RoundTripInfoModal;

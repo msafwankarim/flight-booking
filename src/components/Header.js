@@ -1,14 +1,25 @@
 import { AppBar, Button, Toolbar, Box } from "@mui/material";
+import { useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
 import LOGO from "../assets/logo.png";
+import FlightContext from "../store/flight-context";
 
 const Header = () => {
+  const { userInfo, setUserInfo } = useContext(FlightContext);
+
+  const logOut = () => {
+    localStorage.setItem("userInfo", null);
+    setUserInfo(null);
+  };
+
   return (
     <AppBar>
       <Toolbar>
-        <div style={{ maxWidth: 150, filter: "invert(1)" }}>
-          <img src={LOGO} alt={LOGO} />
-        </div>
+        <Link to="/">
+          <div style={{ maxWidth: 150, filter: "invert(1)" }}>
+            <img src={LOGO} alt={LOGO} />
+          </div>
+        </Link>
         <Box
           variant="h5"
           component="div"
@@ -17,7 +28,7 @@ const Header = () => {
           <Button color="inherit">
             <NavLink
               className="navlink"
-              to="/"
+              to="/home"
               style={({ isActive }) =>
                 isActive ? { borderBottom: "2px solid" } : {}
               }
@@ -37,14 +48,30 @@ const Header = () => {
             </NavLink>
           </Button>
         </Box>
-        <Link
-          to="/track-ticket"
-          style={{ color: "inherit", textDecoration: "none" }}
-        >
-          <Button color="inherit" variant="outlined">
-            Track my Ticket
-          </Button>
-        </Link>
+        {userInfo ? (
+          <>
+            <Link
+              to="/track-ticket"
+              style={{ color: "inherit", textDecoration: "none" }}
+            >
+              <Button color="inherit" variant="outlined">
+                Track my Ticket
+              </Button>
+            </Link>
+            <Button sx={{ ml: 2 }} color="inherit" onClick={logOut}>
+              Logout
+            </Button>
+          </>
+        ) : (
+          <Link
+            to="/login"
+            style={{ color: "inherit", textDecoration: "none" }}
+          >
+            <Button color="inherit" variant="outlined">
+              Login
+            </Button>
+          </Link>
+        )}
       </Toolbar>
     </AppBar>
   );

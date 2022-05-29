@@ -1,21 +1,51 @@
 import {
   Avatar,
-  ListItemButton,
+  Button,
+  Divider,
   ListItem,
+  ListItemButton,
   Paper,
   Typography,
-  Box,
-  Divider,
-  Button,
 } from "@mui/material";
+import { Box } from "@mui/system";
 import { useContext } from "react";
 import FlightContext from "../store/flight-context";
 import FlightTime from "./FlightTime";
 
-const FlightListItem = ({ data, onBooking, elevated, seats }) => {
-  const fContext = useContext(FlightContext);
-  seats = seats || fContext.seats;
+const BasicFlightInfo = ({ flight }) => {
+  return (
+    <Box
+      display="flex"
+      sx={{
+        padding: 2,
+        alignItems: "center",
+      }}
+    >
+      <Avatar sx={{ width: 56, height: 56 }}>{flight.airline_name[0]}</Avatar>
+      <Box
+        sx={{
+          display: "flex",
+          marginX: 3,
+          flexGrow: 1,
+        }}
+      >
+        <Box display="flex" flexGrow="1" alignItems="center">
+          <FlightTime flightTime={flight.departure} />
+          <Box
+            flexGrow="1"
+            height="2px"
+            sx={{ backgroundColor: "lightgray", marginX: 2 }}
+          ></Box>
+          <FlightTime flightTime={flight.arrival} />
+        </Box>
+      </Box>
+    </Box>
+  );
+};
 
+const RoundTripListItem = ({ onBooking, data, elevated }) => {
+  const { seats } = useContext(FlightContext);
+  console.log("Seats", seats);
   const refundableText = (
     <Typography
       variant="caption"
@@ -27,7 +57,7 @@ const FlightListItem = ({ data, onBooking, elevated, seats }) => {
         borderRadius: "3px",
       }}
     >
-      {data.isRefundable ? "Refundable" : "Non Refundable"}
+      {data.outboundFlight.isRefundable ? "Refundable" : "Non Refundabe"}
     </Typography>
   );
 
@@ -58,39 +88,15 @@ const FlightListItem = ({ data, onBooking, elevated, seats }) => {
               }}
             >
               <Typography variant="body2" fontWeight="bold">
-                {data.airline_name}
+                {data.outboundFlight.airline_name},{" "}
+                {data.inboundFlight.airline_name}
               </Typography>
               {refundableText}
             </Box>
             <Divider />
-            <Box
-              display="flex"
-              sx={{
-                padding: 2,
-                alignItems: "center",
-              }}
-            >
-              <Avatar sx={{ width: 56, height: 56 }}>
-                {data.airline_name[0]}
-              </Avatar>
-              <Box
-                sx={{
-                  display: "flex",
-                  marginX: 3,
-                  flexGrow: 1,
-                }}
-              >
-                <Box display="flex" flexGrow="1" alignItems="center">
-                  <FlightTime flightTime={data.departure} />
-                  <Box
-                    flexGrow="1"
-                    height="2px"
-                    sx={{ backgroundColor: "lightgray", marginX: 2 }}
-                  ></Box>
-                  <FlightTime flightTime={data.arrival} />
-                </Box>
-              </Box>
-            </Box>
+            <BasicFlightInfo flight={data.outboundFlight} />
+            <Divider />
+            <BasicFlightInfo flight={data.inboundFlight} />
           </Box>
           <Box
             padding={2}
@@ -100,7 +106,11 @@ const FlightListItem = ({ data, onBooking, elevated, seats }) => {
             justifyContent="center"
           >
             <Typography fontWeight="bold" marginY={1}>
-              Rs. {(data.price * seats).toLocaleString()}
+              Rs.{" "}
+              {(
+                (data.inboundFlight.price + data.outboundFlight.price) *
+                seats
+              ).toLocaleString()}
             </Typography>
             {onBooking && (
               <Button
@@ -120,4 +130,4 @@ const FlightListItem = ({ data, onBooking, elevated, seats }) => {
   );
 };
 
-export default FlightListItem;
+export default RoundTripListItem;

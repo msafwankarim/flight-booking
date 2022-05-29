@@ -20,6 +20,7 @@ const SeatsInput = ({ seats, setSeats }) => {
     <TextField
       variant="outlined"
       label="Number of Seats"
+      name="seats"
       value={seats}
       onChange={(event) => setSeats(event.target.value)}
       type="number"

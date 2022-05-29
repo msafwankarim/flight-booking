@@ -2,6 +2,7 @@ import {
   AccessTimeOutlined,
   AirplanemodeActiveOutlined,
   FlightLand,
+  FlightOutlined,
   FlightTakeoff,
 } from "@mui/icons-material";
 
@@ -18,10 +19,10 @@ import { getTimeDifference } from "../utils/date-helpers";
 import FlightListItem from "./FlightListItem";
 import FlightTime from "./FlightTime";
 
-const FlightInfoCard = ({ flight, onConfirmBooking, buttonText }) => {
+const FlightInfoCard = ({ flight, onConfirmBooking, buttonText, seats }) => {
   return (
     <Box>
-      <FlightListItem data={flight} />
+      <FlightListItem data={flight} seats={seats} />
       <Card variant="outlined" sx={{ padding: 1 }}>
         <Box className="header" display="inline-flex" gap={2} padding={1}>
           <Typography>{flight.departure.location}</Typography>
@@ -47,7 +48,21 @@ const FlightInfoCard = ({ flight, onConfirmBooking, buttonText }) => {
               display="flex"
               alignItems="center"
               justifyContent="center"
+              flexDirection="column"
             >
+              <Box
+                border="1px solid lightgray"
+                borderRadius="3px"
+                width="fit-content"
+                padding={1}
+                margin={2}
+              >
+                <Typography>
+                  <FlightOutlined />
+                  &nbsp;
+                  {flight.flightno}
+                </Typography>
+              </Box>
               <Box
                 border="1px solid lightgray"
                 borderRadius="3px"

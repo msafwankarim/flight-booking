@@ -4,6 +4,7 @@ import FlightContext from "./flight-context";
 const FlightContextProvider = ({ children }) => {
   const [inboundFlight, setInboundFlight] = useState(null),
     [outboundFlight, setOutboundFlight] = useState(null),
+    [userInfo, setUserInfo] = useState(null),
     [seats, setSeats] = useState(0);
   return (
     <FlightContext.Provider
@@ -12,6 +13,8 @@ const FlightContextProvider = ({ children }) => {
         outboundFlight,
         setInboundFlight,
         setOutboundFlight,
+        userInfo,
+        setUserInfo,
         seats,
         setSeats,
       }}

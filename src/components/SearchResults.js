@@ -9,12 +9,17 @@ import {
 } from "@mui/material";
 import FlightList from "./FlightList";
 import { useSearchParams, createSearchParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import axios from "axios";
+import RoundTripList from "./RoundTripList";
+import FlightContext from "../store/flight-context";
 
 const SearchResults = () => {
   const [queryParams] = useSearchParams();
   const [results, setResults] = useState(null);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState(false),
+    [roundTrips, setRoundTrips] = useState(false);
+  const { setSeats } = useContext(FlightContext);
   const [emptyForm, setEmptyForm] = useState(
     Object.keys(Object.fromEntries(queryParams)).length === 0
   );
@@ -24,21 +29,18 @@ const SearchResults = () => {
       return setEmptyForm(
         Object.keys(Object.fromEntries(queryParams)).length === 0
       );
-
-    fetch(
-      `http://localhost:8000/api/flights?${createSearchParams(queryParams)}`
-    )
+    setSeats(queryParams.get("seats") * 1);
+    axios
+      .get(
+        `http://localhost:8000/api/flights?${createSearchParams(queryParams)}`
+      )
       .then((res) => {
-        if (!res.ok) {
-          setError(true);
-          throw new Error(res.json());
-        }
-        return res.json();
+        console.log(res);
+        setResults(res.data.results);
+        setRoundTrips(res.data.roundTrips);
       })
-      .then((data) => {
-        console.log(data.flights);
-        setResults(data.flights);
-        setError(false);
+      .catch((err) => {
+        setError(err);
       });
   }, [queryParams, emptyForm]);
 
@@ -77,7 +79,11 @@ const SearchResults = () => {
             <b>{results.length}</b> results found
           </Typography>
         </Box>
-        <FlightList list={results} />
+        {roundTrips ? (
+          <RoundTripList list={results} />
+        ) : (
+          <FlightList list={results} />
+        )}
       </>
     );
   }

@@ -1,92 +1,56 @@
-import { Box, Tab, Tabs } from "@mui/material";
-import { useContext, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { Box, CircularProgress, Tab, Tabs } from "@mui/material";
+import axios from "axios";
+import { useContext, useEffect, useState } from "react";
+
 import FlightContext from "../store/flight-context";
-import PaymentModal from "./PaymentModal";
-import PersonalInfoForm from "./PersonalInfoForm";
-import TabPanel from "./TabPanel";
 import TicketInfo from "./TicketInfo";
 
-const BookingInfoTabs = ({ flightInfo }) => {
-  const [activeTab, setActiveTab] = useState(0);
-  const [personalInfo, setPersonalInfo] = useState(null),
-    [paymentModal, setPaymentModal] = useState(false);
+const BookingInfoTabs = ({ confirmCallback }) => {
+  const { inboundFlight, outboundFlight, setOutboundFlight, setInboundFlight } =
+    useContext(FlightContext);
+  const [personalInfo, setPersonalInfo] = useState(null);
 
-  const [params] = useSearchParams();
-  const navigate = useNavigate();
-  const handleTabChange = (event, newTab) => {
-    setActiveTab(newTab);
-  };
+  const { userInfo, seats } = useContext(FlightContext);
 
-  const { inboundFlight, outboundFlight } = useContext(FlightContext);
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8000/api/users/${userInfo.userId}`)
+      .then((res) => {
+        console.log(res.data);
+        setPersonalInfo(res.data.user);
+      });
+  }, [userInfo]);
 
-  const onNext = (info) => {
-    setPersonalInfo(info);
-    setActiveTab(1);
-  };
-
-  const onPayment = (creditCartInfo) => {
-    const passengerData = { ...personalInfo, ...creditCartInfo };
-
-    const ticket = {
-      passenger: passengerData,
-      inboundFlight: inboundFlight._id,
-      seats: params.get("seats") * 1,
+  const onConfirmBooking = async () => {
+    let ticket = {
+      outboundFlight: outboundFlight._id,
+      passenger: userInfo.userId,
+      seats,
     };
 
-    if (outboundFlight) ticket.outboundFlight = outboundFlight._id;
-
-    fetch(`http://localhost:8000/api/tickets`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(ticket),
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to save data");
-        return res.json();
-      })
-      .then((data) => {
-        console.log(data);
-        navigate({
-          pathname: "/track-ticket",
-          search: `?q=${data.ticket.ticket_id}`,
-        });
-      });
+    if (inboundFlight) ticket.inboundFlight = inboundFlight._id;
+    try {
+      const res = await axios.post("http://localhost:8000/api/tickets", ticket);
+      ticket = res.data.ticket;
+      confirmCallback(ticket);
+    } catch (e) {
+      alert("Booking Failed");
+    }
   };
 
   return (
     <Box>
-      <Box borderBottom={1} borderColor="divider">
-        <Tabs
-          value={activeTab}
-          onChange={handleTabChange}
-          aria-label="basic tabs example"
-        >
-          <Tab label="Personal Information" />
-          <Tab disabled={!personalInfo} label="Flight Information" />
-        </Tabs>
-      </Box>
-      <Box className="tab-panels" sx={{ mt: 1 }}>
-        <TabPanel value={0} activeValue={activeTab}>
-          <PersonalInfoForm onNext={onNext} initialInfo={personalInfo} />
-        </TabPanel>
-        <TabPanel value={1} activeValue={activeTab}>
+      {personalInfo ? (
+        <Box className="tab-panels" sx={{ mt: 1 }}>
           <TicketInfo
-            flightInfo={flightInfo}
+            flights={{ inboundFlight, outboundFlight }}
             personalInfo={personalInfo}
             ticketActionText="Continue for payment"
-            onTicketAction={() => setPaymentModal(true)}
+            onTicketAction={onConfirmBooking}
           />
-        </TabPanel>
-      </Box>
-      {paymentModal && (
-        <PaymentModal
-          handleClose={() => setPaymentModal(false)}
-          onPayment={onPayment}
-          amount={flightInfo.price * (params.get("seats") * 1)}
-        />
+        </Box>
+      ) : (
+        <CircularProgress />
       )}
     </Box>
   );
